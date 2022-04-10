@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -132,3 +134,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'leads.User'
+
+
+# To handle emails for local develeopment
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# TO handle default login redirect
+LOGIN_REDIRECT_URL = "/leads"

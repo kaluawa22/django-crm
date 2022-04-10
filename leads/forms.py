@@ -12,7 +12,6 @@ class LeadModelForm(forms.ModelForm):
         )
 
 
-
 class LeadForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()

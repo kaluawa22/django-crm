@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -5,8 +6,16 @@ from .models import Lead, Agent
 from .forms import LeadModelForm, LeadForm
 
 
-
 #CRUD+L - CREATE RETRIEVE UPDATE DELETE + List
+
+class SignupView(CreateView):
+    template_name = "registration/signup.html"
+    form_class = LeadModelForm
+
+    def get_success_url(self):
+        return reverse("leads:lead-list")
+
+
 
 
 
@@ -33,6 +42,16 @@ class LeadCreateView(CreateView):
 
     def get_success_url(self):
         return reverse("leads:lead-list")
+    # adding to default form valid function. This is to send and email after the creation of a new lead. 
+    def form_valid(self, form):
+        # TODO send email
+        send_mail(
+            subject="A lead has been created", 
+            message="Go to the site to see the new lead", 
+            from_email="test@test.com",
+            recipient_list=["test2@test2.com"]
+        )
+        return super(LeadCreateView, self).form_valid(form)
 
 class LeadUpdateView(UpdateView):
     queryset = Lead.objects.all()
@@ -48,9 +67,6 @@ class LeadDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse("leads:lead-list")
-
-
-
 
 
 
