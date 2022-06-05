@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'leads',
+    'agents',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,4 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # TO handle default login redirect
 LOGIN_REDIRECT_URL = "/leads"
+LOGIN_URL = "/login"
