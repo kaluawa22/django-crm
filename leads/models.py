@@ -36,9 +36,21 @@ class Lead(models.Model):
     age = models.IntegerField(default = 0)
     agent = models.ForeignKey(Agent, null=True, blank=True, on_delete = models.SET_NULL)
     organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    category = models.ForeignKey("Category", related_name="leads", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+
+class Category(models.Model):
+    # New, Contacted, Converted, Unconververted
+    name = models.CharField(max_length=20)
+    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
 
 # creates corresponding User Profile when user is created. Only If created returns TRUE
 def post_user_created_signal(sender, instance, created, **kwargs):
