@@ -3,7 +3,7 @@
     {% block content %}
 
 
-    <section class="text-gray-600 body-font">
+    {% comment %} <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto flex flex-wrap">
             <div class="w-full mb-6 py-6 flex justify-between items-center border-b border-gray-200">
                 <div>
@@ -30,7 +30,8 @@
                                 {{lead.first_name}} {{lead.last_name}}
                             </h2>
                             <p class="leading-relaxed text-base">
-                                Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine.
+                                
+                                {{ lead.description }}
                             </p>
                             <a href="{% url 'leads:lead-detail' lead.pk %}" class="mt-3 text-indigo-500 inline-flex items-center">
                                 View This Lead
@@ -63,7 +64,7 @@
                                 {{lead.first_name}} {{lead.last_name}}
                             </h2>
                             <p class="leading-relaxed text-base">
-                                Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine.
+                                {{ lead.description }}
                             </p>
                             <a href="{% url 'leads:assign-agent' lead.pk %}" class="mt-3 text-indigo-500 inline-flex items-center">
                                 Assign an Agent
@@ -79,6 +80,196 @@
             {% endif %}
           </div>
         </div>
-    </section>  
+    </section>
+    
+     {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <section class="text-gray-600">
+        <div class="container px-5 py-0 mx-auto flex flex-wrap">
+            <div class="w-full mb-0 py-0 flex justify-between items-center border-b border-gray-200">
+                <div>
+                    <h1 class="text-4xl text-gray-800">Leads</h1>
+                    <a class="text-gray-500 bg-gray-100 hover:text-blue-500" href="{% url 'leads:category-list' %}">View Categories</a>
+                </div>
+                {% if request.user.is_organizor %}
+                <div>
+                    <a class="text-gray-500 bg-gray-100 hover:text-blue-500" href="{% url 'leads:lead-create' %}">Create a New Lead</a>
+                </div>
+                {% endif %}        
+            </div>
+        </div>
+        <div class=" px-5 py-24 mx-auto">
+            <div class="flex flex-col">
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <div class="overflow-hidden sm:rounded">
+                            <table class="min-w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">First Name</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Last Name</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Description</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Agent</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Category</th>
+                                        {% comment %} <th scope="col" class="relative px-6 py-3">
+                                            <span class="sr-only">Edit</span>
+                                        </th> {% endcomment %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Odd row -->
+                                    {% for lead in leads %}
+                                    <tr class="bg-white">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.first_name}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.last_name}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.description}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.agent}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ lead.category}}</td>
+                                        {% comment %} <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                </svg>
+                                            </a>
+                                        </td> {% endcomment %}
+                                    </tr>
+                                    {% endfor %}
+                                    <!-- Even row -->
+                                    {% comment %} <tr class="bg-gray-50">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">Vercel</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">vercel.com</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">vercel@example.com</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">Hosting</td>
+                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr> {% endcomment %}
+                                    <!-- More people... -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% if unassigned_leads.exists %}
+    <section class="text-gray-600">
+        <div class="container px-5 py-0 mx-auto flex flex-wrap">
+            <div class="w-full mb-0 py-0 flex justify-between items-center border-b border-gray-200">
+                <div>
+                    <h1 class="text-4xl text-gray-800">Unassigned Leads</h1>
+                </div>    
+            </div>
+        </div>
+        <div class=" px-5 py-24 mx-auto">
+            <div class="flex flex-col">
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <div class="overflow-hidden sm:rounded">
+                            <table class="min-w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">First Name</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Last Name</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Description</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Agent</th>
+                                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Category</th>
+                                        {% comment %} <th scope="col" class="relative px-6 py-3">
+                                            <span class="sr-only">Edit</span>
+                                        </th> {% endcomment %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Odd row -->
+                                    {% for lead in unassigned_leads %}
+                                    <tr class="bg-white">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.first_name}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.last_name}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.description}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.agent}}</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ lead.category}}</td>
+                                        {% comment %} <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                </svg>
+                                            </a>
+                                        </td> {% endcomment %}
+                                    </tr>
+                                    {% endfor %}
+                                    <!-- Even row -->
+                                    {% comment %} <tr class="bg-gray-50">
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">Vercel</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">vercel.com</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">vercel@example.com</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">Hosting</td>
+                                        <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                            <a href="#" class="text-blue-600 hover:text-blue-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr> {% endcomment %}
+                                    <!-- More people... -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     {% endblock content %}

@@ -92,6 +92,11 @@ class LeadCreateView(OrganizorAndLoginRequiredMixin, CreateView):
     # adding to default form valid function. This is to send and email after the creation of a new lead. 
     def form_valid(self, form):
         # TODO send email
+
+        lead = form.save(commit=False)
+        lead.organization = self.request.user.userprofile
+        lead.save()
+        
         send_mail(
             subject="A lead has been created", 
             message="Go to the site to see the new lead", 
@@ -109,7 +114,7 @@ class LeadUpdateView(OrganizorAndLoginRequiredMixin, UpdateView):
         return Lead.objects.filter(organization=user.userprofile)
     
     def get_success_url(self):
-        return reverse("leads:lead-update")
+        return reverse("leads:lead-update", kwargs={"pk": self.get_object().id})
 
 class LeadDeleteView(OrganizorAndLoginRequiredMixin, DeleteView):
     template_name = "leads/lead_delete.html"
@@ -169,7 +174,11 @@ class CategoryListView(LoginRequiredMixin, ListView):
                 )
 
         context.update({
-            "unassigned_lead_count": Lead.objects.filter(category__isnull=True).count()
+            "unassigned_lead_count": Lead.objects.filter(category__isnull=True).count(),
+            # "assigned_lead_count": Lead.objects.filter(category__isnull=False).count(),
+            "contacted_lead_count": Lead.objects.filter(category__name__contains="Contacted").count(),
+            "converted_lead_count": Lead.objects.filter(category__name__startswith="Converted").count(),
+            "unconverted_lead_count": Lead.objects.filter(category__name__startswith="Unconverted").count()
         })
         return context
 
